@@ -78,7 +78,7 @@ const newUsuario = async (req,res) =>{
 
   
     // Consulta SQL para seleccionar los datos del usuario y el rol correspondiente
-    const [rows1] = await connection.query(`insert into tercero (tercerocol,numeroTercero,cedula) VALUES (?,?,?)`,[newUsuario,numtercero,password]);
+    const [rows1] = await connection.query(`insert into tercero (tercerocol,numeroTercero,cedula,estado) VALUES (?,?,?,?)`,[newUsuario,numtercero,password,0]);
 
     const idTerceroNew = rows1.insertId
 

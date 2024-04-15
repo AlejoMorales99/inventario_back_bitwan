@@ -1632,8 +1632,6 @@ const putActivosFijos = async (req, res) => {
       const usuarioNombre = req.body.usuarioNombre;
       const referencia = req.body.referencia;
 
-      console.log(ID);
-
 
       // Autorizar la conexión con Google Sheets y actualizar los datos
       /* authorize().then(updateData).catch(console.error);
@@ -2886,7 +2884,7 @@ const validarActa = async (req, res) => {
       try {
         await connection.beginTransaction();
       
-        if(nombreUsuario == 'KAROL YISETH' || nombreUsuario == "MARI LUZ"){
+        if(nombreUsuario == 'karol yiseth mosquera alzate' || nombreUsuario == "mari luz pulgarin"){
 
           if(tipoMovimiento == "Instalación Inicial" || tipoMovimiento == "Instalación Traslado" || tipoMovimiento == "Instalación Migración" || tipoMovimiento == "Instalación Soporte" || tipoMovimiento == 'Reconexion'){
             [obtenerUsuarioId] = await connection.query(`select u.idusuarios from usuarios as u inner join tercero as t on t.idtercero = u.tercero_idtercero where t.tercerocol = ?  `,nombreUsuario);
@@ -3073,7 +3071,7 @@ const anularActa = async (req, res) => {
 
         await connection.beginTransaction();
 
-        if(nombreUsuario == 'KAROL YISETH' || nombreUsuario == "MARI LUZ"){
+        if(nombreUsuario == 'karol yiseth mosquera alzate' || nombreUsuario == "mari luz pulgarin"){
            [obtenerUsuarioId] = await connection.query('select u.idusuarios from usuarios as u inner join tercero as t on t.idtercero = u.tercero_idtercero where t.tercerocol = ?',nombreUsuario);
            [servicioActivo] = await connection.query(`SELECT idServicio FROM servicio INNER JOIN tercero ON tercero.idtercero = servicio.tercero_idtercero WHERE LOWER(tercero.tercerocol) = ?`, servicio);
         }else{
