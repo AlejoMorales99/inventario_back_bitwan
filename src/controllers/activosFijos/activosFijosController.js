@@ -227,25 +227,26 @@ const buscarRegistros = async (req, res) => {
 
       }else if(columna == "categoria"){
 
-        const [rows] = await pool.query(`select 
-        idactivoFijo, numeroActivo, 
-        activofijo.serial, MAC,
-        descripcion, DATE_FORMAT(fechaIngreso,'%Y-%m-%d') AS fechaIngreso , 
-        DATE_FORMAT(fechaModificacion,'%Y-%m-%d') AS fechaModificacion , 
-        categoriainv.nombre as categoria , 
-        estadouso.estadoUsocol AS estado ,
+        const [rows] = await pool.query(`SELECT 
+        idactivoFijo, numeroActivo, activofijo.serial, MAC,
+        descripcion, DATE_FORMAT(fechaIngreso,'%Y-%m-%d') AS fechaIngreso, 
+        DATE_FORMAT(fechaModificacion,'%Y-%m-%d') AS fechaModificacion, 
+        categoriainv.nombre as categoria, 
+        estadouso.estadoUsocol AS estado,
         proveedorinven.nombre as proveedor,
         tercero.tercerocol as servicio,
         referencia_idreferencia as referencia,
         usuario,
         usuarioModifica,
         servicio_Cliente
-        from activofijo
-        inner join categoriainv on categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
-        inner join estadouso on idestadoUso = estadoUso_idestadoUso
-        inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
-        LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where  categoriainv.nombre = ? order by idactivoFijo desc;
+    FROM activofijo
+    INNER JOIN categoriainv ON categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
+    INNER JOIN estadouso ON idestadoUso = estadoUso_idestadoUso
+    INNER JOIN proveedorinven ON idproveedorInven = proveedorInven_idproveedorInven
+    LEFT JOIN servicio ON servicio.idservicio = activofijo.servicio_idservicio
+    LEFT JOIN tercero ON servicio.tercero_idtercero = tercero.idtercero 
+    WHERE categoriainv.nombre LIKE CONCAT('%', ?, '%') 
+    ORDER BY idactivoFijo DESC;
         `,buscar);
   
         res.status(200).json(rows);
@@ -269,7 +270,7 @@ const buscarRegistros = async (req, res) => {
         inner join estadouso on idestadoUso = estadoUso_idestadoUso
         inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where  estadouso.estadoUsocol = ? order by idactivoFijo desc;
+        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where  estadouso.estadoUsocol LIKE CONCAT('%', ?, '%')  order by idactivoFijo desc;
         `,buscar);
   
         res.status(200).json(rows);
@@ -293,7 +294,7 @@ const buscarRegistros = async (req, res) => {
         inner join estadouso on idestadoUso = estadoUso_idestadoUso
         inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where  proveedorinven.nombre = ? order by idactivoFijo desc;
+        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where  proveedorinven.nombre  LIKE CONCAT('%', ?, '%') order by idactivoFijo desc;
         `,buscar);
   
         res.status(200).json(rows);
@@ -334,7 +335,7 @@ const buscarRegistros = async (req, res) => {
           INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
           INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
           LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where rm.razonMovimientocol = ?
+          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where rm.razonMovimientocol LIKE CONCAT('%', ?, '%')
           ORDER BY
               CASE 
                   WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -434,7 +435,7 @@ const buscarRegistros = async (req, res) => {
           INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
           INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
           LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where te.nombre = ?
+          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where te.nombre  LIKE CONCAT('%', ?, '%')
           ORDER BY
               CASE 
                   WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -535,7 +536,7 @@ const buscarRegistros = async (req, res) => {
           INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
           INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
           LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where eam.nombre = ?
+          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where eam.nombre  LIKE CONCAT('%', ?, '%')
           ORDER BY
               CASE 
                   WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -636,7 +637,7 @@ const buscarRegistros = async (req, res) => {
           INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
           INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
           LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where ts.tercerocol = ? || a.entraCliente=?
+          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where ts.tercerocol  LIKE CONCAT('%', ?, '%') || a.entraCliente=?
           ORDER BY
               CASE 
                   WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -740,7 +741,7 @@ const buscarRegistros = async (req, res) => {
           INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
           INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
           LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where tss.tercerocol = ? || a.saleCliente=?
+          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where tss.tercerocol LIKE CONCAT('%', ?, '%') || a.saleCliente=?
           ORDER BY
               CASE 
                   WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -3467,7 +3468,7 @@ const ObtenerTecnicos = async (req, res) => {
       // Si el código de respuesta de la función validarToken es 200, se ejecuta el siguiente bloque de código.
 
       const [rows] = await pool.query(`SELECT idservicio, tercero.tercerocol,numeroTercero FROM servicio 
-      inner join tercero on tercero_idtercero = tercero.idtercero where tipoServicio_idtipoServicio = 4 `);
+      inner join tercero on tercero_idtercero = tercero.idtercero where tipoServicio_idtipoServicio = 4 && estado = 0 `);
       
       res.status(200).json(rows);
 
@@ -3592,6 +3593,44 @@ const cedulaTecnico = async (req, res) => {
   }
 };
 
+const cambiarEstadoTecnico = async (req, res) => {
+  try {
+
+    const token = req.headers.authorization.split(' ')[1]; // Obtengo el token del encabezado de la solicitud
+
+    if (!token) {
+      // Si no se proporciona un token, se devuelve un código de estado 401 con un mensaje indicando que el token no fue proporcionado.
+      return res.status(401).json({ mensaje: 'Token no proporcionado' });
+    }
+
+    // Se llama a la función validarToken para verificar y obtener datos a partir del token.
+    const data = await validarToken(token);
+
+    if (data.code == 200) {
+      // Si el código de respuesta de la función validarToken es 200, se ejecuta el siguiente bloque de código.
+
+      const numTerceroTecnico = req.body.numTerceroTecnico;
+      const [rows] = await pool.query(`update tercero set estado=1 where numeroTercero = ?`,numTerceroTecnico);
+      
+      res.status(200).json(rows);
+
+    } else {
+      // Si el código de respuesta de la función validarToken no es 200, se imprime un mensaje de "Autorización inválida" en la consola y se devuelve un código de estado 401 con un mensaje indicando que el token es inválido.
+      console.log("Autorizacion invalida");
+      return res.status(401).json({ message: 'Token inválido' });
+    }
+
+  } catch (error) {
+    // Si se produce un error durante la ejecución del código, se captura y se imprime en la consola. Se devuelve un código de estado 500 con un mensaje indicando que no se pudo establecer la conexión.
+    console.error(error);
+    res.status(500).json({
+      message: "Error no se pudo establecer la conexión",
+    });
+  }
+};
+
+
+
 
 
 module.exports = {
@@ -3628,6 +3667,7 @@ module.exports = {
   buscarRegistrosPorFechaAndServicio,
   getBodegaAjusteInventarioIngreso,
   cedulaTecnico,
-  totalActivosFijosTecnicos
+  totalActivosFijosTecnicos,
+  cambiarEstadoTecnico
 };
 

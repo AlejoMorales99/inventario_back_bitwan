@@ -7,7 +7,7 @@ const {
         postCrearActaDeMovimiento,getAllActaMovimientos, validarActa,getAllMovimientosTecnicos,getActivosFijosTecnicos,
         anularActa,buscarActivoFijoMoverTecnicos,getAllActas, postMovimientos,getRazonDeMovimientoTecnicos,
         getBodegasTecnicos,retiroCliente,retiroClienteEspecifico,ObtenerTecnicos,buscarRegistros,
-        getBodegaAjusteInventario,getRazonesDeMovimiento,buscarRegistrosPorFechaAndServicio,getBodegaAjusteInventarioIngreso,cedulaTecnico,totalActivosFijosTecnicos
+        getBodegaAjusteInventario,getRazonesDeMovimiento,buscarRegistrosPorFechaAndServicio,getBodegaAjusteInventarioIngreso,cedulaTecnico,totalActivosFijosTecnicos,cambiarEstadoTecnico
       } = require('../../controllers/activosFijos/activosFijosController');
 
 
@@ -148,6 +148,8 @@ router.get('/getTecnicos', ObtenerTecnicos )
 
 
 router.get('/cedulaTecnico/:cedulaTecnico',cedulaTecnico)
+
+router.put('/cambiarEstadoTecnico',cambiarEstadoTecnico)
 
 //se exporta las rutas para el archivo principal (index.js)
 module.exports = router;
