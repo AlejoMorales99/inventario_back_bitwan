@@ -982,7 +982,7 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 2 order by idactivoFijo desc;
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio LIKE CONCAT('%', 2, '%') order by idactivoFijo desc;
           `);
   
           res.status(200).json(rows);
@@ -1007,7 +1007,7 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 3 order by idactivoFijo desc;
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio LIKE CONCAT('%', 3, '%') order by idactivoFijo desc;
           `);
   
           res.status(200).json(rows);
@@ -1031,7 +1031,7 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where tercero.tercerocol = ? || servicio_Cliente = ?  order by idactivoFijo desc;
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where tercero.tercerocol LIKE CONCAT('%', ?, '%') || servicio_Cliente  LIKE CONCAT('%', ?, '%')  order by idactivoFijo desc;
           `,[buscar,buscar]);
   
           res.status(200).json(rows);
