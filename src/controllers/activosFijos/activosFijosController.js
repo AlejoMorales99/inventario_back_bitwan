@@ -637,7 +637,7 @@ const buscarRegistros = async (req, res) => {
           INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
           INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
           LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where ts.tercerocol  LIKE CONCAT('%', ?, '%') || a.entraCliente=?
+          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where ts.tercerocol  LIKE CONCAT('%', ?, '%') || a.entraCliente LIKE CONCAT('%', ?, '%')
           ORDER BY
               CASE 
                   WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -741,7 +741,7 @@ const buscarRegistros = async (req, res) => {
           INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
           INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
           LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where tss.tercerocol LIKE CONCAT('%', ?, '%') || a.saleCliente=?
+          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where tss.tercerocol LIKE CONCAT('%', ?, '%') || a.saleCliente LIKE CONCAT('%', ?, '%')
           ORDER BY
               CASE 
                   WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -1867,14 +1867,17 @@ const buscarActivoFijoMover = async (req, res) => {
       // Si el código de respuesta de la función validarToken es 200, se ejecuta el siguiente bloque de código.
 
       // Se obtiene el parámetro "id" de la solicitud.
+      const bodegaSale = req.params.bodegaSale;
       const numero = req.params.numero;
       const usuario = req.params.usuario;
       const razon = req.params.razon;
 
+     
+
       // Se ejecuta una consulta SQL utilizando el parámetro "id" para obtener los datos correspondientes.
 
      if(razon == 18){
-
+      
       const [rows] = await pool.query(
         `SELECT idactivoFijo, activofijo.numeroActivo, categoriainv.nombre as categoria , referencia.nombre as referencia, marca.marcacol as marca, proveedorinven.nombre as proveedor, numeroActivo, activofijo.MAC, activofijo.serial, tercero.tercerocol AS bodega , servicio.idservicio, estadoM FROM activofijo
         INNER JOIN servicio ON servicio.idservicio = activofijo.servicio_idservicio
@@ -1883,7 +1886,7 @@ const buscarActivoFijoMover = async (req, res) => {
         inner join referencia on referencia.idreferencia = activofijo.referencia_idreferencia
         inner join marca on marca.idmarca = referencia.marca_idmarca
         inner join proveedorinven on proveedorinven.idproveedorInven = activofijo.proveedorInven_idproveedorInven
-        WHERE activofijo.numeroActivo = ?  && (tercero.tercerocol =? or  tercero.tercerocol =?) `, [numero, 'alcala2','Pendiente']
+        WHERE activofijo.numeroActivo = ?  && servicio.idservicio = ? `, [numero, bodegaSale]
       );
 
       // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.

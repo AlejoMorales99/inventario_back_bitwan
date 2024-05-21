@@ -83,7 +83,7 @@ router.post('/postMovimientos', postMovimientos )
 router.put('/putActivosFijos', putActivosFijos )
 
 //Ruta que busca la ont en especifico que se desea mover cuando se vaya a hacer el movimiento
-router.get('/buscarActivoFijoMover/:numero/:usuario/:razon', buscarActivoFijoMover )
+router.get('/buscarActivoFijoMover/:numero/:usuario/:razon/:bodegaSale', buscarActivoFijoMover )
 
 //Ruta que busca la ont en especifico que se desea mover cuando se vaya a hacer el movimiento en el inventario de los tecnicos
 router.get('/buscarActivoFijoMoverTecnicos/:numero/:usuario/:numTercero', buscarActivoFijoMoverTecnicos )
