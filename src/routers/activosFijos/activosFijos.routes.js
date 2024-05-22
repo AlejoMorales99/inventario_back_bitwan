@@ -7,7 +7,7 @@ const {
         postCrearActaDeMovimiento,getAllActaMovimientos, validarActa,getAllMovimientosTecnicos,getActivosFijosTecnicos,
         anularActa,buscarActivoFijoMoverTecnicos,getAllActas, postMovimientos,getRazonDeMovimientoTecnicos,
         getBodegasTecnicos,retiroCliente,retiroClienteEspecifico,ObtenerTecnicos,buscarRegistros,
-        getBodegaAjusteInventario,getRazonesDeMovimiento,buscarRegistrosPorFechaAndServicio,getBodegaAjusteInventarioIngreso,cedulaTecnico,totalActivosFijosTecnicos,cambiarEstadoTecnico
+        getBodegaAjusteInventario,getRazonesDeMovimiento,buscarRegistrosPorFechaAndServicio,getBodegaAjusteInventarioIngreso,cedulaTecnico,totalActivosFijosTecnicos,cambiarEstadoTecnico,inicio
       } = require('../../controllers/activosFijos/activosFijosController');
 
 
@@ -47,6 +47,9 @@ const storage = multer.diskStorage({
 
 
 const upload = multer({ storage: storage });
+
+//Ruta para Buscar activos fijos dependiendo de la columna
+router.get('/', inicio )
 
 //Ruta para Buscar activos fijos dependiendo de la columna
 router.get('/buscarRegistros/:buscar/:columna/:nomUsuario/:idUsuario', buscarRegistros )

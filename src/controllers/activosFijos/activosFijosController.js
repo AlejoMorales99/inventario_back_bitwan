@@ -15,6 +15,38 @@ let cantidadMovimientosClientes
 
 //-----------------------FUNCIONES DEL MODULO DE REGISTRAS ACTIVOS FIJOS Y EDITAR Y PODER VER SUS REGISTROS Y SUS OTRAS FUNCIONALIDADES COMO VALIDACIONES-----------------------
 
+const inicio = async (req, res) => {
+  try {
+
+    const token = req.headers.authorization.split(' ')[1]; // Obtengo el token del encabezado de la solicitud
+
+    if (!token) {
+      // Si no se proporciona un token, se devuelve un código de estado 401 con un mensaje indicando que el token no fue proporcionado.
+      return res.status(401).json({ mensaje: 'Token no proporcionado' });
+    }
+
+    // Se llama a la función validarToken para verificar y obtener datos a partir del token.
+    const data = await validarToken(token);
+
+    if (data.code == 200) {
+      
+      res.status(200).send('API INVENTARIO');
+      
+
+    } else {
+      // Si el código de respuesta de la función validarToken no es 200, se imprime un mensaje de "Autorización inválida" en la consola y se devuelve un código de estado 401 con un mensaje indicando que el token es inválido.
+      console.log("Autorizacion invalida");
+      return res.status(401).json({ message: 'Token inválido' });
+    }
+
+  } catch (error) {
+    // Si se produce un error durante la ejecución del código, se captura y se imprime en la consola. Se devuelve un código de estado 500 con un mensaje indicando que no se pudo establecer la conexión.
+    console.error(error);
+    res.status(500).json({
+      message: "Error no se pudo establecer la conexión",
+    });
+  }
+};
 const buscarRegistros = async (req, res) => {
   try {
 
@@ -3671,6 +3703,7 @@ module.exports = {
   getBodegaAjusteInventarioIngreso,
   cedulaTecnico,
   totalActivosFijosTecnicos,
-  cambiarEstadoTecnico
+  cambiarEstadoTecnico,
+  inicio
 };
 
