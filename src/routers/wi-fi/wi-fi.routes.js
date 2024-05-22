@@ -3,12 +3,12 @@ const {getWifi,postWifi,getOneWifi,wifiEditar} = require('../../controllers/wi-f
 const router = Router();
 
 
-router.get('/getWifi', getWifi )
+router.get('/api/getWifi', getWifi )
 
-router.get('/getOneWifi/:id', getOneWifi )
+router.get('/api/getOneWifi/:id', getOneWifi )
 
-router.post('/postWifi', postWifi )
+router.post('/api/postWifi', postWifi )
 
-router.put('/wifiEditar', wifiEditar )
+router.put('/api/wifiEditar', wifiEditar )
 
 module.exports = router;

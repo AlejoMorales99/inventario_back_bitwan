@@ -3,12 +3,12 @@ const {getMarca,postMarca,getOneMarca,putMarca} = require('../../controllers/mar
 const router = Router();
 
 //ruta para iniciar sesion
-router.get('/getMarca', getMarca )
+router.get('/api/getMarca', getMarca )
 
-router.get('/getOneMarca/:idMarca', getOneMarca )
+router.get('/api/getOneMarca/:idMarca', getOneMarca )
 
-router.post('/postMarca', postMarca )
+router.post('/api/postMarca', postMarca )
 
-router.put('/putMarca', putMarca )
+router.put('/api/putMarca', putMarca )
 
 module.exports = router;

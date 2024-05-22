@@ -3,15 +3,15 @@ const {getBodegas,getAllBodegas,crearBodegas,eliminarBodega} = require('../../co
 const router = Router();
 
 
-router.get('/getBodegas', getBodegas )
+router.get('/api/getBodegas', getBodegas )
 
 
-router.get('/getAllBodegas', getAllBodegas )
+router.get('/api/getAllBodegas', getAllBodegas )
 
 
-router.post('/crearBodegas', crearBodegas )
+router.post('/api/crearBodegas', crearBodegas )
 
-router.delete('/eliminarBodega/:id', eliminarBodega )
+router.delete('/api/eliminarBodega/:id', eliminarBodega )
 
 
 

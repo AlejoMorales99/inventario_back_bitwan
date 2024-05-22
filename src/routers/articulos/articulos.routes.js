@@ -3,7 +3,7 @@ const {getArticulos} = require('../../controllers/articulos/articulosController'
 const router = Router();
 
 
-router.get('/getArticulos', getArticulos )
+router.get('/api/getArticulos', getArticulos )
 
 
 

@@ -3,14 +3,14 @@ const {getReferencias,postReferencias,getOneReferencia,putReferencias,getTiposEq
 const router = Router();
 
 //ruta para iniciar sesion
-router.get('/getReferencias', getReferencias )
+router.get('/api/getReferencias', getReferencias )
 
-router.get('/getTiposEquipos', getTiposEquipos )
+router.get('/api/getTiposEquipos', getTiposEquipos )
 
-router.get('/getOneReferencia/:id', getOneReferencia )
+router.get('/api/getOneReferencia/:id', getOneReferencia )
 
-router.post('/postReferencias', postReferencias )
+router.post('/api/postReferencias', postReferencias )
 
-router.put('/putReferencias', putReferencias )
+router.put('/api/putReferencias', putReferencias )
 
 module.exports = router;

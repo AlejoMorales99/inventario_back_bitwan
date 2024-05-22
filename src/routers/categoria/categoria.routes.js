@@ -3,13 +3,13 @@ const {getCategoria,postCategorias,getOneCategoria,putCategoria} = require('../.
 const router = Router();
 
 //ruta para iniciar sesion
-router.get('/getCategoria', getCategoria )
+router.get('/api/getCategoria', getCategoria )
 
-router.get('/getOneCategoria/:idCategoria', getOneCategoria )
+router.get('/api/getOneCategoria/:idCategoria', getOneCategoria )
 
-router.post('/postCategorias', postCategorias )
+router.post('/api/postCategorias', postCategorias )
 
-router.put('/putCategoria', putCategoria )
+router.put('/api/putCategoria', putCategoria )
 
 
 module.exports = router;

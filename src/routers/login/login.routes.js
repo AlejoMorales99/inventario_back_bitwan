@@ -3,11 +3,11 @@ const {getUsuario,loginUsuario,newUsuario} = require('../../controllers/login/lo
 const router = Router();
 
 //ruta para iniciar sesion
-router.post('/getUsuario', getUsuario )
+router.post('/api/getUsuario', getUsuario )
 
-router.get('/loginUsuario/:nombreUsuario/:numTercero',loginUsuario)
+router.get('/api/loginUsuario/:nombreUsuario/:numTercero',loginUsuario)
 
 
-router.get('/postLoginUsuario/:newUsuario/:numtercero/:password',newUsuario)
+router.get('/api/postLoginUsuario/:newUsuario/:numtercero/:password',newUsuario)
 
 module.exports = router;

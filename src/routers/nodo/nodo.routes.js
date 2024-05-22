@@ -3,12 +3,12 @@ const {getNodo,postNodo,getOneNodo,putNodo} = require('../../controllers/conexio
 const router = Router();
 
 
-router.get('/getNodo', getNodo )
+router.get('/api/getNodo', getNodo )
 
-router.get('/getOneNodo/:id', getOneNodo )
+router.get('/api/getOneNodo/:id', getOneNodo )
 
-router.post('/postNodo', postNodo )
+router.post('/api/postNodo', postNodo )
 
-router.put('/putNodo', putNodo )
+router.put('/api/putNodo', putNodo )
 
 module.exports = router;

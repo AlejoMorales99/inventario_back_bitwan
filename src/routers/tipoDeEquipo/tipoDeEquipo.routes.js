@@ -7,12 +7,12 @@ const router = Router();
 
 
 //Ruta para Buscar activos fijos dependiendo de la columna
-router.get('/getTipoDeEquipo', getTipoDeEquipo )
+router.get('/api/getTipoDeEquipo', getTipoDeEquipo )
 
-router.get('/getOneTipoDeEquipo/:idEquipo', getOneTipoDeEquipo )
+router.get('/api/getOneTipoDeEquipo/:idEquipo', getOneTipoDeEquipo )
 
-router.post('/registrarEquipos',registrarEquipos)
+router.post('/api/registrarEquipos',registrarEquipos)
 
-router.put('/putTipoDeEquipo',putTipoDeEquipo)
+router.put('/api/putTipoDeEquipo',putTipoDeEquipo)
 
 module.exports = router;

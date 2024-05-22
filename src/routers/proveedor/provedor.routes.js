@@ -3,12 +3,12 @@ const {getProveedor,postProveedores,getOneProveedor,putProveedores} = require('.
 const router = Router();
 
 //ruta para iniciar sesion
-router.get('/getProveedor', getProveedor )
+router.get('/api/getProveedor', getProveedor )
 
-router.get('/getOneProveedor/:idProveedor', getOneProveedor )
+router.get('/api/getOneProveedor/:idProveedor', getOneProveedor )
 
-router.post('/postProveedores', postProveedores )
+router.post('/api/postProveedores', postProveedores )
 
-router.put('/putProveedor', putProveedores )
+router.put('/api/putProveedor', putProveedores )
 
 module.exports = router;

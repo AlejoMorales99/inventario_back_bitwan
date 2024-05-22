@@ -3,14 +3,14 @@ const {getEstado,postEstados,getOneEstados,putEstados} = require('../../controll
 const router = Router();
 
 //ruta para iniciar sesion
-router.get('/getEstados', getEstado )
+router.get('/api/getEstados', getEstado )
 
 
-router.get('/getOneEstados/:idEstado', getOneEstados )
+router.get('/api/getOneEstados/:idEstado', getOneEstados )
 
-router.post('/postEstados', postEstados )
+router.post('/api/postEstados', postEstados )
 
-router.put('/putEstados', putEstados )
+router.put('/api/putEstados', putEstados )
 
 
 
