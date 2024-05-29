@@ -1,6 +1,7 @@
 // Importar el módulo 'pool' que proporciona la conexión a la base de datos
 const pool = require("../../database/db.js");
 const validarToken = require("../../validarTokenServicios/validarToken.js");
+const retirarCliente = require("../../retirarClientes/retirarClientes.js");
 
 require('dotenv').config({ path: '../../../.env' });
 
@@ -2139,10 +2140,18 @@ const getRazonDeMovimientoTecnicos = async (req, res) => {
     if (data.code == 200) {
       // Si el código de respuesta de la función validarToken es 200, se ejecuta el siguiente bloque de código.
       
-        const [rows] = await pool.query(`SELECT *
-        FROM razonmovimiento
-        WHERE  razonMovimientocol LIKE 'Devolución a central%'
-        OR razonMovimientocol LIKE 'Envio a Técnico%';`);
+      const [rows] = await pool.query(`select idrazonMovimiento, razonMovimientocol from razonmovimiento where 
+      razonMovimientocol ='Instalación Inicial' or
+      razonMovimientocol='Instalación Traslado' or 
+      razonMovimientocol='Instalación Migración' or
+      razonMovimientocol='Instalación Soporte' or
+      razonMovimientocol='Retiro Final' or
+      razonMovimientocol='Retiro Soporte' or
+      razonMovimientocol='Retiro Migración' or
+      razonMovimientocol='Retiro Traslado' or
+      razonMovimientocol='Reconexion' or
+      razonMovimientocol='Envio a Técnico' or
+      razonMovimientocol='Devolución a central'`);
 
         // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.
         res.status(200).json(rows);

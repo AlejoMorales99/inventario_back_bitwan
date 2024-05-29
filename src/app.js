@@ -39,7 +39,7 @@ app.use(routerReferencias); // Utilizo las rutas relacionadas con las referencia
 app.use(routerEstados); // Utilizo las rutas relacionadas con los estados
 app.use(routerTipoDeEquipo);
 
-app.use('/static', express.static(path.join(__dirname, '../uploads')));
+app.use('/api/static', express.static(path.join(__dirname, '../uploads')));
 
 
 module.exports = app; // Exporto la aplicación Express para su uso en otros archivos
