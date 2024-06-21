@@ -1321,6 +1321,7 @@ const getActivosFijosTecnicos = async (req, res) => {
       proveedorinven.nombre as proveedor,
       tercero.tercerocol as servicio,
       marca.marcacol,
+      tipoequipo.nombreEquipo as tipoEquipo,
       referencia.nombre as referencia_ont ,
       referencia_idreferencia as referencia,
       usuario,
@@ -1332,6 +1333,7 @@ const getActivosFijosTecnicos = async (req, res) => {
       inner join servicio on servicio.idservicio = activofijo.servicio_idservicio
       inner join tercero on servicio.tercero_idtercero = tercero.idtercero 
       inner join referencia on referencia.idreferencia = referencia_idreferencia 
+      inner join tipoequipo on tipoequipo.idtipoEquipo = referencia.tipoEquipo_idtipoEquipo
       inner join marca on marca.idmarca = referencia.marca_idmarca where tercero.numeroTercero = ? order by idactivoFijo desc;`, [numeroTercero]);
 
       // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.

@@ -1,9 +1,9 @@
 const querystring = require('querystring');
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 function validarToken(token) {
   const data = querystring.stringify({ authorization: token });
 
-  return fetch('http://104.131.8.122:8000/checktoken', {
+  return fetch('https://serviciostest.bitwan.info/api/public/checktoken', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
