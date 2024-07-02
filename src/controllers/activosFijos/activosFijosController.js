@@ -2054,11 +2054,21 @@ const razonDeMovimiento = async (req, res) => {
 
       // Se ejecuta una consulta SQL utilizando el parámetro "id" para obtener los datos correspondientes.
       const [rows] = await pool.query(`select * from razonmovimiento where 
+      razonMovimientocol='Retiro Final' or
       razonMovimientocol ='Envio a Técnico' or
       razonMovimientocol='Salida Baja' or
       razonMovimientocol='Venta Salida' or
       razonMovimientocol='Ajuste Inventario Ingreso ' or
-      razonMovimientocol='Ajuste Inventario Salida'`);
+      razonMovimientocol='Ajuste Inventario Salida' ORDER BY 
+    CASE razonMovimientocol
+      WHEN 'Envio a Técnico' THEN 1
+      WHEN 'Retiro Final' THEN 2
+      WHEN 'Salida Baja' THEN 3
+      WHEN 'Venta Salida' THEN 4
+      WHEN 'Ajuste Inventario Ingreso' THEN 5
+      WHEN 'Ajuste Inventario Salida' THEN 6
+      ELSE 7
+    END `);
 
 
       // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.
@@ -2334,7 +2344,13 @@ const Bodegas = async (req, res) => {
         inner join tercero on tercero_idtercero = tercero.idtercero 
         inner join tiposervicio on tipoServicio_idtipoServicio = tiposervicio.idtipoServicio where  tercero.tercerocol = ?`,  'alcala1');
       res.status(200).json(rows);
-     }
+     }else if (razon == 'Retiro Final') {
+      const [rows] = await pool.query(`select idservicio as ID , tercero.tercerocol AS nombre , tiposervicio.tipoServiciocol as tipo
+      from servicio 
+      inner join tercero on tercero_idtercero = tercero.idtercero 
+      inner join tiposervicio on tipoServicio_idtipoServicio = tiposervicio.idtipoServicio where tercero.tercerocol = ? && tercero.numeroTercero = ? `, [usuario.toLowerCase().trim(),numTercero ]);
+      res.status(200).json(rows);
+    }
 
     } else {
       // Si el código de respuesta de la función validarToken no es 200, se imprime un mensaje de "Autorización inválida" en la consola y se devuelve un código de estado 401 con un mensaje indicando que el token es inválido.
