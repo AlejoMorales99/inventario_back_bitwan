@@ -146,8 +146,8 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where serial = ? order by idactivoFijo desc;
-          `, buscar
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero WHERE activofijo.serial LIKE ? ORDER BY idactivoFijo DESC;` ,[`%${buscar}%`]
+          
           );
 
           res.status(200).json(rows);
@@ -2525,7 +2525,13 @@ const postCrearActaDeMovimiento = async (req, res) => {
       const anio = fechaActual.getFullYear();
       const mes = String(fechaActual.getMonth() + 1).padStart(2, "0");
       const dia = String(fechaActual.getDate()).padStart(2, "0");
-      const fechaFormateada = `${anio}-${mes}-${dia}`;
+      const hora = String(fechaActual.getHours()).padStart(2, "0");
+      const minutos = String(fechaActual.getMinutes()).padStart(2, "0");
+      const segundos = String(fechaActual.getSeconds()).padStart(2, "0");
+
+      const fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
+
+      
 
       const connection = await pool.getConnection();
 
@@ -2782,9 +2788,9 @@ const getAllActaMovimientos = async (req, res) => {
       SELECT 
       a.idactaMovimiento,
       a.obsActaRecha,
-      DATE_FORMAT(a.fechaValidacion,'%Y-%m-%d') as fechaValidacion,
+      DATE_FORMAT(a.fechaValidacion,'%Y-%m-%d %H:%i') as fechaValidacion,
       a.descripcion,
-      DATE_FORMAT(a.fechaRegistro,'%Y-%m-%d') as fechaRegistro, 
+      DATE_FORMAT(a.fechaRegistro, '%Y-%m-%d %H:%i') as fechaRegistro, 
       a.guiaTransportadora, 
       rm.razonMovimientocol, 
       eam.nombre AS estadoActaMovimiento, 
@@ -2931,7 +2937,11 @@ const validarActa = async (req, res) => {
       const anio = fechaActual.getFullYear();
       const mes = String(fechaActual.getMonth() + 1).padStart(2, "0");
       const dia = String(fechaActual.getDate()).padStart(2, "0");
-      const fechaFormateada = `${anio}-${mes}-${dia}`;
+      const hora = String(fechaActual.getHours()).padStart(2, "0");
+      const minutos = String(fechaActual.getMinutes()).padStart(2, "0");
+      const segundos = String(fechaActual.getSeconds()).padStart(2, "0");
+
+      const fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
 
       // Si el código de respuesta de la función validarToken es 200, se ejecuta el siguiente bloque de código.
       const id = req.params.id;
@@ -3116,7 +3126,11 @@ const anularActa = async (req, res) => {
       const anio = fechaActual.getFullYear();
       const mes = String(fechaActual.getMonth() + 1).padStart(2, "0");
       const dia = String(fechaActual.getDate()).padStart(2, "0");
-      const fechaFormateada = `${anio}-${mes}-${dia}`;
+      const hora = String(fechaActual.getHours()).padStart(2, "0");
+      const minutos = String(fechaActual.getMinutes()).padStart(2, "0");
+      const segundos = String(fechaActual.getSeconds()).padStart(2, "0");
+
+      const fechaFormateada = `${anio}-${mes}-${dia} ${hora}:${minutos}:${segundos}`;
 
       // Si el código de respuesta de la función validarToken es 200, se ejecuta el siguiente bloque de código.
 
