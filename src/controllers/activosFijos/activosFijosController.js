@@ -2542,66 +2542,10 @@ const postCrearActaDeMovimiento = async (req, res) => {
 
         const [obtenerUsuarioId] = await connection.query('select u.idusuarios from usuarios as u inner join tercero as t on t.idtercero = u.tercero_idtercero where t.tercerocol = ?',nombreUsuario);
         
-        const [actasRepetidas] = await connection.query(`select * from actamovimiento where idServicioEntra = ? && estadoActaMov_idestadoActaMov = 1 `, BodegaEntra);
+        //const [actasRepetidas] = await connection.query(`select * from actamovimiento where idServicioEntra = ? && estadoActaMov_idestadoActaMov = 1 `, BodegaEntra);
 
-        const [actasRepetidasClientes] = await connection.query(`select * from actamovimiento where entraCliente = ? && estadoActaMov_idestadoActaMov = 1 `, BodegaEntra);
-
-        
-
-        if (actasRepetidas.length >= 1 || actasRepetidasClientes.length >=1 ) {
-
-          if(actasRepetidasClientes.length>=1){
-            res.status(200).json(actasRepetidasClientes);
-            return;
-          }
-
-          if (actasRepetidas[0].idServicioEntra != 2) {
-            res.status(200).json(actasRepetidas);
-          } else {
-
-            if (ImgGuia == null) {
-
-              const [rows] = await connection.query(`insert into actamovimiento 
-              (descripcion,razonMovimiento_idrazonMovimiento,fechaRegistro,guiaTransportadora,
-              imgGuiaTrans,estadoActaMov_idestadoActaMov,TipoEntrega_idTipoEntrega,idServicioEntra,
-              idServicioSale,idUsuarioRegistra,numTercero) VALUES (?,?,?,?,?,?,?,?,?,?,?)` , [Descripcion, RazonMovimiento, fechaFormateada, GuiaTrasportadora, ImgGuia, estadoActa, TipoEntrega, BodegaEntra, bodegaSale, obtenerUsuarioId[0].idusuarios,numTercero ]);
-
-              const idActaMovimientos = rows.insertId; // Obtener el ID del último registro insertado
-
-              for (let i = 0; i < idOnts.length; i++) {
-                const [rows1] = await connection.query(`insert into movimiento (activoFijo_idactivoFijo,actaMovimiento_idactaMovimiento,estadoMovimiento) VALUES (?,?,?)`, [idOnts[i], idActaMovimientos, 0]);
-                const [actualizarActivo] = await connection.query(`update activofijo SET estadoM=? where idactivoFijo=? `, [1, idOnts[i]]);
-              }
-
-              await connection.commit();
-              // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.
-              res.status(200).json(rows);
-
-            } else {
-
-              const [rows] = await connection.query(`insert into actamovimiento 
-              (descripcion,razonMovimiento_idrazonMovimiento,fechaRegistro,guiaTransportadora,
-              imgGuiaTrans,estadoActaMov_idestadoActaMov,TipoEntrega_idTipoEntrega,idServicioEntra,
-              idServicioSale,idUsuarioRegistra,numTercero) VALUES (?,?,?,?,?,?,?,?,?,?,?)` , [Descripcion, RazonMovimiento, fechaFormateada, GuiaTrasportadora, ImgGuia, estadoActa, TipoEntrega, BodegaEntra, bodegaSale, obtenerUsuarioId[0].idusuarios,numTercero]);
-
-              const idActaMovimientos = rows.insertId; // Obtener el ID del último registro insertado
-
-              for (let i = 0; i < idOnts.length; i++) {
-                const [rows1] = await connection.query(`insert into movimiento (activoFijo_idactivoFijo,actaMovimiento_idactaMovimiento,estadoMovimiento) VALUES (?,?,?)`, [idOnts[i], idActaMovimientos, 0]);
-                const [actualizarActivo] = await connection.query(`update activofijo SET estadoM=? where idactivoFijo=? `, [1, idOnts[i]]);
-              }
-
-              await connection.commit();
-              // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.
-              res.status(200).json(rows);
-
-
-            }
-
-          }
-
-
-        } else {
+        //const [actasRepetidasClientes] = await connection.query(`select * from actamovimiento where entraCliente = ? && estadoActaMov_idestadoActaMov = 1 `, BodegaEntra);
+       
 
           if (ImgGuia == null) {
 
@@ -2737,7 +2681,7 @@ const postCrearActaDeMovimiento = async (req, res) => {
 
           }
 
-        }
+        
 
       } catch (error) {
         await connection.rollback();
