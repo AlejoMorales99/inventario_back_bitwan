@@ -70,7 +70,7 @@ const buscarRegistros = async (req, res) => {
       const idUsuario = req.params.idUsuario;
 
       const [servicioUsuario] = await pool.query(`SELECT idServicio FROM servicio INNER JOIN tercero ON tercero.idtercero = servicio.tercero_idtercero WHERE LOWER(tercero.tercerocol) = ?`,nomUsuario);
-      
+   
 
       if(columna == "Numero activo fijo" ){
 
@@ -257,6 +257,30 @@ const buscarRegistros = async (req, res) => {
         `,buscar);
   
         res.status(200).json(rows);
+
+      }else if(columna == "Descripcion"){
+
+        const [rows] = await pool.query(`select 
+          idactivoFijo, numeroActivo, 
+          activofijo.serial, MAC,
+          descripcion, DATE_FORMAT(fechaIngreso,'%Y-%m-%d') AS fechaIngreso , 
+          DATE_FORMAT(fechaModificacion,'%Y-%m-%d') AS fechaModificacion , 
+          categoriainv.nombre as categoria , 
+          estadouso.estadoUsocol AS estado ,
+          proveedorinven.nombre as proveedor,
+          tercero.tercerocol as servicio,
+          referencia_idreferencia as referencia,
+          usuario,
+          usuarioModifica,
+          servicio_Cliente
+          from activofijo
+          inner join categoriainv on categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
+          inner join estadouso on idestadoUso = estadoUso_idestadoUso
+          inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
+          LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero WHERE descripcion LIKE ? ORDER BY idactivoFijo DESC;` ,[`%${buscar}%`]);
+    
+          res.status(200).json(rows);
 
       }else if(columna == "categoria"){
 
