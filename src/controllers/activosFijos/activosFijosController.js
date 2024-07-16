@@ -2372,7 +2372,7 @@ const Bodegas = async (req, res) => {
       const [rows] = await pool.query(`select idservicio as ID , tercero.tercerocol AS nombre , tiposervicio.tipoServiciocol as tipo
       from servicio 
       inner join tercero on tercero_idtercero = tercero.idtercero 
-      inner join tiposervicio on tipoServicio_idtipoServicio = tiposervicio.idtipoServicio where tercero.tercerocol = ? && tercero.numeroTercero = ? `, [usuario.toLowerCase().trim(),numTercero ]);
+      inner join tiposervicio on tipoServicio_idtipoServicio = tiposervicio.idtipoServicio where tercero.tercerocol = ? && tercero.numeroTercero = ? `, [usuario.toLowerCase().trim(),5065 ]);
       res.status(200).json(rows);
     }
 
