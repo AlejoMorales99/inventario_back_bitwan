@@ -904,7 +904,7 @@ const buscarRegistros = async (req, res) => {
           INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
           INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
           LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where a.fechaRegistro = ?
+          LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero WHERE DATE(a.fechaRegistro) = ?
           ORDER BY
               CASE 
                   WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -955,7 +955,7 @@ const buscarRegistros = async (req, res) => {
         INNER JOIN usuarios usu ON usu.idusuarios = a.idUsuarioRegistra
         INNER JOIN tercero tt ON tt.idtercero = usu.tercero_idtercero
         LEFT JOIN usuarios usua ON usua.idusuarios = a.idUsuarioValida
-        LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero where a.fechaValidacion = ?
+        LEFT JOIN tercero ter ON ter.idtercero = usua.tercero_idtercero  WHERE DATE(a.fechaRegistro) = ?
         ORDER BY
             CASE 
                 WHEN eam.nombre = 'Pendiente Aceptacion' THEN 1
@@ -1039,7 +1039,7 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio LIKE CONCAT('%', 2, '%') order by idactivoFijo desc;
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 2 order by idactivoFijo desc;
           `);
   
           res.status(200).json(rows);
@@ -1064,7 +1064,7 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio LIKE CONCAT('%', 3, '%') order by idactivoFijo desc;
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 2 order by idactivoFijo desc;
           `);
   
           res.status(200).json(rows);
@@ -1228,29 +1228,10 @@ const getActivosFijos = async (req, res) => {
     if (data.code == 200) {
       // Si el código de respuesta de la función validarToken es 200, se ejecuta la siguiente consulta SQL y se obtiene el resultado.
 
-      const [rows] = await pool.query(`select 
-      idactivoFijo, numeroActivo, 
-      activofijo.serial, MAC,
-      descripcion, DATE_FORMAT(fechaIngreso,'%Y-%m-%d') AS fechaIngreso , 
-      DATE_FORMAT(fechaModificacion,'%Y-%m-%d') AS fechaModificacion , 
-      categoriainv.nombre as categoria , 
-      estadouso.estadoUsocol AS estado ,
-      proveedorinven.nombre as proveedor,
-      tercero.tercerocol as servicio,
-      referencia_idreferencia as referencia,
-      usuario,
-      usuarioModifica,
-      servicio_Cliente
-      from activofijo
-      inner join categoriainv on categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
-      inner join estadouso on idestadoUso = estadoUso_idestadoUso
-      inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
-      LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-      LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero order by idactivoFijo desc;
-      `);
+      const [rows] = await pool.query(`call obtenerAllActivosFijos`);
 
       // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.
-      res.status(200).json(rows);
+      res.status(200).json(rows[0]);
 
     } else {
       // Si el código de respuesta de la función validarToken no es 200, se imprime un mensaje de "Autorización inválida" en la consola y se devuelve un código de estado 401 con un mensaje indicando que el token es inválido.

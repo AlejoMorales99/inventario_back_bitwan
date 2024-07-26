@@ -45,10 +45,8 @@ const storage = multer.diskStorage({
 });
 
 
-
 const upload = multer({ storage: storage });
 
-//Ruta para Buscar activos fijos dependiendo de la columna
 router.get('/', inicio )
 
 //Ruta para Buscar activos fijos dependiendo de la columna

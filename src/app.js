@@ -14,7 +14,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'] // Permito estos encabezados en las solicitudes
 }));
 
-// Rutas
+//---------------------------------------------Rutas de activos fijos-------------------------------------------//
 const routerArticulos = require('./routers/articulos/articulos.routes'); // Importo las rutas relacionadas con los artículos
 const routerLogin = require('./routers/login/login.routes'); // Importo las rutas relacionadas con el login
 const routerActivosFijos = require('./routers/activosFijos/activosFijos.routes'); // Importo las rutas relacionadas con los activos fijos
@@ -27,6 +27,14 @@ const routerReferencias = require('./routers/referencias/referencias.routes'); /
 const routerEstados = require('./routers/estados/estados.routes'); // Importo las rutas relacionadas con los estados
 const routerTipoDeEquipo = require('./routers/tipoDeEquipo/tipoDeEquipo.routes') //Importo las rutas relacionadas con los tipos de equipo
 
+
+//---------------------------------------------routes de insumos-------------------------------------------------//
+const routerInsumos = require('./routers/insumos/insumos.routes');
+
+
+
+
+//---------------------------------middelwares de activos fijos-------------------------------------------------//
 app.use(routerArticulos); // Utilizo las rutas relacionadas con los artículos
 app.use(routerLogin); // Utilizo las rutas relacionadas con el login
 app.use(routerActivosFijos); // Utilizo las rutas relacionadas con los activos fijos
@@ -37,7 +45,12 @@ app.use(routerCategoria); // Utilizo las rutas relacionadas con las categorias
 app.use(routerProveedor); // Utilizo las rutas relacionadas con los proveedores
 app.use(routerReferencias); // Utilizo las rutas relacionadas con las referencias
 app.use(routerEstados); // Utilizo las rutas relacionadas con los estados
-app.use(routerTipoDeEquipo);
+app.use(routerTipoDeEquipo); // Utilizo las rutas relacionadas con los tipos de equipo
+
+
+//---------------------------------middelwares de insumos-------------------------------------------------//
+app.use(routerInsumos);
+
 
 app.use('/api/static', express.static(path.join(__dirname, '../uploads')));
 
