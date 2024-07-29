@@ -50,10 +50,10 @@ const upload = multer({ storage: storage });
 router.get('/', inicio )
 
 //Ruta para Buscar activos fijos dependiendo de la columna
-router.get('/api/buscarRegistros/:buscar/:columna/:nomUsuario/:idUsuario', buscarRegistros )
+router.get('/api/buscarRegistros/:buscar/:columna/:nomUsuario/:idUsuario/:page/:itemPerPage', buscarRegistros )
 
 //ruta para buscar activos fijos por fecha inicio fecha fin y bodega
-router.get('/api/buscarRegistrosPorFechaAndServicio/:servicio/:columna/:fechaInicio/:fechaFin/:nomUsuario/:idUsuario', buscarRegistrosPorFechaAndServicio )
+router.get('/api/buscarRegistrosPorFechaAndServicio/:servicio/:columna/:fechaInicio/:fechaFin/:nomUsuario/:idUsuario/:page/:itemPerPage', buscarRegistrosPorFechaAndServicio )
 
 //Ruta para traer todos los activos fijos de la base de datos 
 router.get('/api/getActivosFijos/:page/:itemsPerPage', getActivosFijos )

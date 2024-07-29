@@ -69,6 +69,10 @@ const buscarRegistros = async (req, res) => {
       const nomUsuario = req.params.nomUsuario;
       const idUsuario = req.params.idUsuario;
 
+      const page = parseInt(req.params.page) || 1; // Página actual
+      const itemsPerPage = parseInt(req.params.itemPerPage) || 10;
+      const offset = (page - 1) * itemsPerPage;
+
       const [servicioUsuario] = await pool.query(`SELECT idServicio FROM servicio INNER JOIN tercero ON tercero.idtercero = servicio.tercero_idtercero WHERE LOWER(tercero.tercerocol) = ?`,nomUsuario);
    
 
@@ -94,33 +98,14 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where numeroActivo = ? order by idactivoFijo desc;
-          `,buscar);
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where numeroActivo = ? order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,buscar);
 
-          res.status(200).json(rows);
-        }else{
-          const [rows] = await pool.query(`select 
-          idactivoFijo, numeroActivo, 
-          activofijo.serial, MAC,
-          descripcion, DATE_FORMAT(fechaIngreso,'%Y-%m-%d') AS fechaIngreso , 
-          DATE_FORMAT(fechaModificacion,'%Y-%m-%d') AS fechaModificacion , 
-          categoriainv.nombre as categoria , 
-          estadouso.estadoUsocol AS estado ,
-          proveedorinven.nombre as proveedor,
-          tercero.tercerocol as servicio,
-          referencia_idreferencia as referencia,
-          usuario,
-          usuarioModifica,
-          servicio_Cliente
-          from activofijo
-          inner join categoriainv on categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
-          inner join estadouso on idestadoUso = estadoUso_idestadoUso
-          inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
-          LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where numeroActivo = ? && servicio_idservicio = ? order by idactivoFijo desc;
-          `,[buscar,servicioUsuario[0].idServicio]);
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where numeroActivo = ?',buscar);
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
 
-          res.status(200).json(rows);
         }
 
         
@@ -146,37 +131,18 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero WHERE activofijo.serial LIKE ? ORDER BY idactivoFijo DESC;` ,[`%${buscar}%`]
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero WHERE activofijo.serial LIKE ? ORDER BY idactivoFijo DESC LIMIT ${offset}, ${itemsPerPage};` ,[`%${buscar}%`]
           
           );
 
-          res.status(200).json(rows);
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where activofijo.serial LIKE ? ',[`%${buscar}%`]);
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
 
-        }else{
-          const [rows] = await pool.query(
-            `select 
-            idactivoFijo, numeroActivo, 
-            activofijo.serial, MAC,
-            descripcion, DATE_FORMAT(fechaIngreso,'%Y-%m-%d') AS fechaIngreso , 
-            DATE_FORMAT(fechaModificacion,'%Y-%m-%d') AS fechaModificacion , 
-            categoriainv.nombre as categoria , 
-            estadouso.estadoUsocol AS estado ,
-            proveedorinven.nombre as proveedor,
-            tercero.tercerocol as servicio,
-            referencia_idreferencia as referencia,
-            usuario,
-            usuarioModifica,
-            servicio_Cliente
-            from activofijo
-            inner join categoriainv on categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
-            inner join estadouso on idestadoUso = estadoUso_idestadoUso
-            inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
-            LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-            LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where serial = ? && servicio_idservicio = ? order by idactivoFijo desc;
-            `, [buscar,servicioUsuario[0].idServicio]
-            );
-  
-            res.status(200).json(rows);
+         
+
         }
 
         
@@ -202,33 +168,13 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where MAC = ? order by idactivoFijo desc;
-          `,buscar);
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where MAC = ? order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,buscar);
     
-          res.status(200).json(rows);
-        }else{
-          const [rows] = await pool.query(`select 
-          idactivoFijo, numeroActivo, 
-          activofijo.serial, MAC,
-          descripcion, DATE_FORMAT(fechaIngreso,'%Y-%m-%d') AS fechaIngreso , 
-          DATE_FORMAT(fechaModificacion,'%Y-%m-%d') AS fechaModificacion , 
-          categoriainv.nombre as categoria , 
-          estadouso.estadoUsocol AS estado ,
-          proveedorinven.nombre as proveedor,
-          tercero.tercerocol as servicio,
-          referencia_idreferencia as referencia,
-          usuario,
-          usuarioModifica,
-          servicio_Cliente
-          from activofijo
-          inner join categoriainv on categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
-          inner join estadouso on idestadoUso = estadoUso_idestadoUso
-          inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
-          LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where MAC = ? && servicio_idservicio = ? order by idactivoFijo desc;
-          `,[buscar,servicioUsuario[0].idServicio]);
-    
-          res.status(200).json(rows);
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where MAC = ?',buscar);
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
         }
 
         
@@ -253,10 +199,13 @@ const buscarRegistros = async (req, res) => {
         inner join estadouso on idestadoUso = estadoUso_idestadoUso
         inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where fechaIngreso = ? order by idactivoFijo desc;
-        `,buscar);
+        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where fechaIngreso = ? order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,buscar);
   
-        res.status(200).json(rows);
+        const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where fechaIngreso = ?',buscar);
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
 
       }else if(columna == "Descripcion"){
 
@@ -278,9 +227,13 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero WHERE descripcion LIKE ? ORDER BY idactivoFijo DESC;` ,[`%${buscar}%`]);
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero WHERE descripcion LIKE ? ORDER BY idactivoFijo DESC LIMIT ${offset}, ${itemsPerPage};` ,[`%${buscar}%`]);
     
-          res.status(200).json(rows);
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where descripcion LIKE ? ',[`%${buscar}%`]);
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
 
       }else if(columna == "categoria"){
 
@@ -302,11 +255,14 @@ const buscarRegistros = async (req, res) => {
     INNER JOIN proveedorinven ON idproveedorInven = proveedorInven_idproveedorInven
     LEFT JOIN servicio ON servicio.idservicio = activofijo.servicio_idservicio
     LEFT JOIN tercero ON servicio.tercero_idtercero = tercero.idtercero 
-    WHERE categoriainv.nombre LIKE CONCAT('%', ?, '%') 
-    ORDER BY idactivoFijo DESC;
-        `,buscar);
-  
-        res.status(200).json(rows);
+    WHERE categoriainv.nombre LIKE ? ORDER BY idactivoFijo DESC LIMIT ${offset}, ${itemsPerPage};`,[`%${buscar}%`]);
+        
+    const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo inner join categoriainv ON categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
+       where categoriainv.nombre LIKE ?` ,[`%${buscar}%`]);
+    res.status(200).json({
+      data: rows,
+      total: totalItems
+    });
 
       }else if(columna == "estado"){
         const [rows] = await pool.query(`select 
@@ -327,10 +283,15 @@ const buscarRegistros = async (req, res) => {
         inner join estadouso on idestadoUso = estadoUso_idestadoUso
         inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where  estadouso.estadoUsocol LIKE CONCAT('%', ?, '%')  order by idactivoFijo desc;
-        `,buscar);
+        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero 
+        where  estadouso.estadoUsocol LIKE ?  order by idactivoFijo desc  LIMIT ${offset}, ${itemsPerPage};`,[`%${buscar}%`]);
   
-        res.status(200).json(rows);
+        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo inner join estadouso on idestadoUso = estadoUso_idestadoUso
+        where estadouso.estadoUsocol LIKE ?` ,[`%${buscar}%`]);
+      res.status(200).json({
+      data: rows,
+      total: totalItems
+    });
 
       }else if(columna == "proveedor"){
         const [rows] = await pool.query(`select 
@@ -351,10 +312,15 @@ const buscarRegistros = async (req, res) => {
         inner join estadouso on idestadoUso = estadoUso_idestadoUso
         inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where  proveedorinven.nombre  LIKE CONCAT('%', ?, '%') order by idactivoFijo desc;
-        `,buscar);
+        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero 
+        where  proveedorinven.nombre  LIKE ? order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,[`%${buscar}%`]);
   
-        res.status(200).json(rows);
+        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo   inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
+        where proveedorinven.nombre LIKE ?` ,[`%${buscar}%`]);
+      res.status(200).json({
+      data: rows,
+      total: totalItems
+    });
 
       }else if(columna == "razon de movimiento"){
 
@@ -1039,10 +1005,14 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 2 order by idactivoFijo desc;
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 2 order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};
           `);
-  
-          res.status(200).json(rows);
+
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where servicio_idservicio = 2');
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
 
         }else if(buscar == "alcala2"){
           
@@ -1064,10 +1034,16 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 2 order by idactivoFijo desc;
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 3 order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};
           `);
+
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where servicio_idservicio = 3');
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
   
-          res.status(200).json(rows);
+         
 
         }else{
           const [rows] = await pool.query(`select 
@@ -1088,10 +1064,17 @@ const buscarRegistros = async (req, res) => {
           inner join estadouso on idestadoUso = estadoUso_idestadoUso
           inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where tercero.tercerocol LIKE CONCAT('%', ?, '%') || servicio_Cliente  LIKE CONCAT('%', ?, '%')  order by idactivoFijo desc;
-          `,[buscar,buscar]);
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero 
+          where tercero.tercerocol LIKE ? || servicio_Cliente  LIKE ?  order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,[[`%${buscar}%`],[`%${buscar}%`]]);
   
-          res.status(200).json(rows);
+          const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo 
+          LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero
+          where tercero.tercerocol LIKE ?  || servicio_Cliente  LIKE ?`,[[`%${buscar}%`],[`%${buscar}%`],]);
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
         }
 
         
@@ -1136,11 +1119,12 @@ const buscarRegistrosPorFechaAndServicio = async (req, res) => {
       // Si el código de respuesta de la función validarToken es 200, se ejecuta la siguiente consulta SQL y se obtiene el resultado.
 
       const servicio = req.params.servicio;
-      const columna = req.params.columna;
       const fechaInicio = req.params.fechaInicio;
       const fechaFin = req.params.fechaFin;
-      const nomUsuario = req.params.nomUsuario;
-      const idUsuario = req.params.idUsuario;
+     
+      const page = parseInt(req.params.page) || 1; // Página actual
+      const itemsPerPage = parseInt(req.params.itemPerPage) || 10;
+      const offset = (page - 1) * itemsPerPage;
     
       if(servicio == "vacio"){
 
@@ -1162,9 +1146,13 @@ const buscarRegistrosPorFechaAndServicio = async (req, res) => {
         inner join estadouso on idestadoUso = estadoUso_idestadoUso
         inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where fechaIngreso >= ? && fechaIngreso <= ? `,[fechaInicio,fechaFin]);
+        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where fechaIngreso >= ? && fechaIngreso <= ? LIMIT ${offset}, ${itemsPerPage};`,[fechaInicio,fechaFin]);
 
-        res.status(200).json(rows);
+        const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo  where fechaIngreso >= ? && fechaIngreso <= ? ',[fechaInicio,fechaFin]);
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
 
       }else{
         const [rows] = await pool.query(`select 
@@ -1185,9 +1173,16 @@ const buscarRegistrosPorFechaAndServicio = async (req, res) => {
         inner join estadouso on idestadoUso = estadoUso_idestadoUso
         inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
-        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where (tercerocol = ? || servicio_Cliente=? ) && fechaIngreso >= ? && fechaIngreso <= ? `,[servicio,servicio,fechaInicio,fechaFin]);
+        LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where (tercerocol = ? || servicio_Cliente=? ) && fechaIngreso >= ? && fechaIngreso <= ? LIMIT ${offset}, ${itemsPerPage}; `,[servicio,servicio,fechaInicio,fechaFin]);
 
-        res.status(200).json(rows);
+        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo 
+          LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
+          LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero
+          where (tercerocol = ? || servicio_Cliente=? ) && fechaIngreso >= ? && fechaIngreso <= ? `,[servicio,servicio,fechaInicio,fechaFin]);
+          res.status(200).json({
+            data: rows,
+            total: totalItems
+          });
       }
 
       
