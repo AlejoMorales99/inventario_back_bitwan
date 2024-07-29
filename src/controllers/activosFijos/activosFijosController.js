@@ -1228,10 +1228,18 @@ const getActivosFijos = async (req, res) => {
     if (data.code == 200) {
       // Si el código de respuesta de la función validarToken es 200, se ejecuta la siguiente consulta SQL y se obtiene el resultado.
 
-      const [rows] = await pool.query(`call obtenerAllActivosFijos`);
+      const page = parseInt(req.params.page) || 1; // Página actual
+      const itemsPerPage = parseInt(req.params.itemsPerPage) || 10;
+      const offset = (page - 1) * itemsPerPage;
+
+      const [rows] = await pool.query(`call obtenerAllActivosFijos(?,?)`,[offset ,itemsPerPage]);
+      const totalItems = await pool.query('SELECT COUNT(*) AS total FROM activoFijo');
 
       // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.
-      res.status(200).json(rows[0]);
+      res.status(200).json({
+        data: rows[0],
+        total: totalItems[0][0].total
+      });
 
     } else {
       // Si el código de respuesta de la función validarToken no es 200, se imprime un mensaje de "Autorización inválida" en la consola y se devuelve un código de estado 401 con un mensaje indicando que el token es inválido.

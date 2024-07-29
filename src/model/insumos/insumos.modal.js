@@ -1,10 +1,23 @@
 const pool = require("../../database/db");
 
 
+
+
 async function getAllInsumos(numeroTerceroUsuario) {
 
     try {
         const [result] = await pool.query('call obtenerInsumosPorTercero(?)', numeroTerceroUsuario);
+        return result[0];
+
+    } catch (error) {
+        console.error('Error al listar los insumos', error);
+    }
+}
+
+async function getAllHistorialInsumos() {
+
+    try {
+        const [result] = await pool.query('call obtenerHistorialComprasInsumosAll');
         return result[0];
 
     } catch (error) {
@@ -65,6 +78,7 @@ async function postInsumoNuevo(nuevoInsumos, cantidadNuevoInsumos, stockMinimo ,
 
 module.exports = {
     getAllInsumos,
+    getAllHistorialInsumos,
     postInsumosExistentes,
     postInsumoNuevo
 }

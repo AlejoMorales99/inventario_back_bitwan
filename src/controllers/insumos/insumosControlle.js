@@ -34,6 +34,36 @@ async function getAllInsumos(req, res) {
   }
 }
 
+async function getAllHistorialInsumos(req, res) {
+  
+  try {
+
+    const token = req.headers.authorization.split(" ")[1]; // Obtengo el token del encabezado de la solicitud
+   
+    if (!token) {
+      // Si no se proporciona un token, se devuelve un código de estado 401 con un mensaje indicando que el token no fue proporcionado.
+      return res.status(401).json({ mensaje: 'Token no proporcionado' });
+    }
+
+    const data = await validarToken(token);
+
+    if (data.code == 200) {
+
+      const getAllHistorialInsumos = await insumosModel.getAllHistorialInsumos();
+
+      res.status(200).json(getAllHistorialInsumos);
+
+    }else{
+      console.log("Autorizacion invalida");
+      return res.status(401).json({ message: 'Token inválido' });
+    }
+    
+  } catch (error) {
+    console.log("Error en listar el historial de las compras " + error);
+    return res.status(401).json({mensaje: "Error al listar el historial de las compras"})
+  }
+}
+
 async function postInsumosExistentes(req, res) {
   
   try {
@@ -132,6 +162,7 @@ async function postInsumoNuevo(req, res) {
 
 module.exports = {
   getAllInsumos,
+  getAllHistorialInsumos,
   postInsumosExistentes,
   postInsumoNuevo
 };

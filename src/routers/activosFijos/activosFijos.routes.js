@@ -56,7 +56,7 @@ router.get('/api/buscarRegistros/:buscar/:columna/:nomUsuario/:idUsuario', busca
 router.get('/api/buscarRegistrosPorFechaAndServicio/:servicio/:columna/:fechaInicio/:fechaFin/:nomUsuario/:idUsuario', buscarRegistrosPorFechaAndServicio )
 
 //Ruta para traer todos los activos fijos de la base de datos 
-router.get('/api/getActivosFijos', getActivosFijos )
+router.get('/api/getActivosFijos/:page/:itemsPerPage', getActivosFijos )
 
 //Ruta para obtener los activos fijos de los tecnicos 
 router.get('/api/getActivosFijosTecnicos/:usuarioNombre', getActivosFijosTecnicos )
