@@ -10,6 +10,9 @@ router.get('/api/getAllInsumos/:numeroTercero', insumosController.getAllInsumos 
 //Ruta para obtener el historial general de todas las compras de insumos
 router.get('/api/getAllHistorialInsumos', insumosController.getAllHistorialInsumos);
 
+//Ruta para obtener el historial general de todas las compras de insumos
+router.get('/api/getInsumosFechaInicioFechFin/:fechaInicio/:fechaFin/:insumoTextHistorial', insumosController.getInsumosFechaInicioFechFin);
+
 //Ruta para aumentar la cantidad de insumos existentes
 router.post('/api/postInsumosExistentes' , insumosController.postInsumosExistentes);
 

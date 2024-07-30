@@ -25,6 +25,27 @@ async function getAllHistorialInsumos() {
     }
 }
 
+async function getInsumosFechaInicioFechFin(fechaInicio,fechaFin,insumoTextHistorial) {
+
+    try {
+
+        if(insumoTextHistorial == "vacio"){
+
+            const [result] = await pool.query('call get_Insumos_FhInicio_FhFin(?,?)',[fechaInicio,fechaFin]);
+            return result[0];
+
+        }else{
+
+            const [result] = await pool.query('call get_Insumos_fhInicio_fhFin_insumo(?,?,?)',[fechaInicio,fechaFin,insumoTextHistorial]);
+            return result[0];
+ 
+        }
+  
+    } catch (error) {
+        console.error('Error al listar los insumos', error);
+    }  
+}
+
 
 async function postInsumosExistentes(nuevoInsumos, cantidadNuevoInsumos, proveedor, marcaText, usuario) {
 
@@ -79,6 +100,7 @@ async function postInsumoNuevo(nuevoInsumos, cantidadNuevoInsumos, stockMinimo ,
 module.exports = {
     getAllInsumos,
     getAllHistorialInsumos,
+    getInsumosFechaInicioFechFin,
     postInsumosExistentes,
     postInsumoNuevo
 }
