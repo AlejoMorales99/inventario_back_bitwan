@@ -100,7 +100,7 @@ const buscarRegistros = async (req, res) => {
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
           LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where numeroActivo = ? order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,buscar);
 
-          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where numeroActivo = ?',buscar);
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activofijo where numeroActivo = ?',buscar);
           res.status(200).json({
             data: rows,
             total: totalItems
@@ -135,7 +135,7 @@ const buscarRegistros = async (req, res) => {
           
           );
 
-          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where activofijo.serial LIKE ? ',[`%${buscar}%`]);
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activofijo where activofijo.serial LIKE ? ',[`%${buscar}%`]);
           res.status(200).json({
             data: rows,
             total: totalItems
@@ -170,7 +170,7 @@ const buscarRegistros = async (req, res) => {
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
           LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where MAC = ? order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,buscar);
     
-          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where MAC = ?',buscar);
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activofijo where MAC = ?',buscar);
           res.status(200).json({
             data: rows,
             total: totalItems
@@ -201,7 +201,7 @@ const buscarRegistros = async (req, res) => {
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
         LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where fechaIngreso = ? order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,buscar);
   
-        const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where fechaIngreso = ?',buscar);
+        const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activofijo where fechaIngreso = ?',buscar);
           res.status(200).json({
             data: rows,
             total: totalItems
@@ -229,7 +229,7 @@ const buscarRegistros = async (req, res) => {
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
           LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero WHERE descripcion LIKE ? ORDER BY idactivoFijo DESC LIMIT ${offset}, ${itemsPerPage};` ,[`%${buscar}%`]);
     
-          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where descripcion LIKE ? ',[`%${buscar}%`]);
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activofijo where descripcion LIKE ? ',[`%${buscar}%`]);
           res.status(200).json({
             data: rows,
             total: totalItems
@@ -257,7 +257,7 @@ const buscarRegistros = async (req, res) => {
     LEFT JOIN tercero ON servicio.tercero_idtercero = tercero.idtercero 
     WHERE categoriainv.nombre LIKE ? ORDER BY idactivoFijo DESC LIMIT ${offset}, ${itemsPerPage};`,[`%${buscar}%`]);
         
-    const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo inner join categoriainv ON categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
+    const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activofijo inner join categoriainv ON categoriainv.idcategoriaInv = categoriaInv_idcategoriaInv
        where categoriainv.nombre LIKE ?` ,[`%${buscar}%`]);
     res.status(200).json({
       data: rows,
@@ -286,7 +286,7 @@ const buscarRegistros = async (req, res) => {
         LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero 
         where  estadouso.estadoUsocol LIKE ?  order by idactivoFijo desc  LIMIT ${offset}, ${itemsPerPage};`,[`%${buscar}%`]);
   
-        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo inner join estadouso on idestadoUso = estadoUso_idestadoUso
+        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activofijo inner join estadouso on idestadoUso = estadoUso_idestadoUso
         where estadouso.estadoUsocol LIKE ?` ,[`%${buscar}%`]);
       res.status(200).json({
       data: rows,
@@ -315,7 +315,7 @@ const buscarRegistros = async (req, res) => {
         LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero 
         where  proveedorinven.nombre  LIKE ? order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,[`%${buscar}%`]);
   
-        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo   inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
+        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activofijo   inner join proveedorinven on idproveedorInven = proveedorInven_idproveedorInven
         where proveedorinven.nombre LIKE ?` ,[`%${buscar}%`]);
       res.status(200).json({
       data: rows,
@@ -1008,7 +1008,7 @@ const buscarRegistros = async (req, res) => {
           LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 2 order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};
           `);
 
-          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where servicio_idservicio = 2');
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activofijo where servicio_idservicio = 2');
           res.status(200).json({
             data: rows,
             total: totalItems
@@ -1037,7 +1037,7 @@ const buscarRegistros = async (req, res) => {
           LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where servicio_idservicio = 3 order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};
           `);
 
-          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo where servicio_idservicio = 3');
+          const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activofijo where servicio_idservicio = 3');
           res.status(200).json({
             data: rows,
             total: totalItems
@@ -1067,7 +1067,7 @@ const buscarRegistros = async (req, res) => {
           LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero 
           where tercero.tercerocol LIKE ? || servicio_Cliente  LIKE ?  order by idactivoFijo desc LIMIT ${offset}, ${itemsPerPage};`,[[`%${buscar}%`],[`%${buscar}%`]]);
   
-          const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo 
+          const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activofijo 
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
           LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero
           where tercero.tercerocol LIKE ?  || servicio_Cliente  LIKE ?`,[[`%${buscar}%`],[`%${buscar}%`],]);
@@ -1148,7 +1148,7 @@ const buscarRegistrosPorFechaAndServicio = async (req, res) => {
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
         LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where fechaIngreso >= ? && fechaIngreso <= ? LIMIT ${offset}, ${itemsPerPage};`,[fechaInicio,fechaFin]);
 
-        const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activoFijo  where fechaIngreso >= ? && fechaIngreso <= ? ',[fechaInicio,fechaFin]);
+        const [totalItems] = await pool.query('SELECT COUNT(*) AS total FROM activofijo  where fechaIngreso >= ? && fechaIngreso <= ? ',[fechaInicio,fechaFin]);
           res.status(200).json({
             data: rows,
             total: totalItems
@@ -1175,7 +1175,7 @@ const buscarRegistrosPorFechaAndServicio = async (req, res) => {
         LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
         LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero where (tercerocol = ? || servicio_Cliente=? ) && fechaIngreso >= ? && fechaIngreso <= ? LIMIT ${offset}, ${itemsPerPage}; `,[servicio,servicio,fechaInicio,fechaFin]);
 
-        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activoFijo 
+        const [totalItems] = await pool.query(`SELECT COUNT(*) AS total FROM activofijo 
           LEFT join servicio on servicio.idservicio = activofijo.servicio_idservicio
           LEFT join tercero on servicio.tercero_idtercero = tercero.idtercero
           where (tercerocol = ? || servicio_Cliente=? ) && fechaIngreso >= ? && fechaIngreso <= ? `,[servicio,servicio,fechaInicio,fechaFin]);
@@ -1228,7 +1228,7 @@ const getActivosFijos = async (req, res) => {
       const offset = (page - 1) * itemsPerPage;
 
       const [rows] = await pool.query(`call obtenerAllActivosFijos(?,?)`,[offset ,itemsPerPage]);
-      const totalItems = await pool.query('SELECT COUNT(*) AS total FROM activoFijo');
+      const totalItems = await pool.query('SELECT COUNT(*) AS total FROM activofijo');
 
       // Se devuelve un código de estado 200 con los datos obtenidos de la consulta SQL.
       res.status(200).json({
